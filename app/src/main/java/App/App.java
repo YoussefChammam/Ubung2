@@ -3,13 +3,14 @@
  */
 package App;
 import App.enums.SearchOptions;
-import App.enums.SortOptions;
 import App.Lists.DoublyLinkedList;
 import App.Lists.SingleLinkedList;
 import App.Data.Student;
 import App.Algorithms.SelectionSort;
 import App.Algorithms.BubbleSort;
 import App.Algorithms.SearchTool;
+import App.Comparators.*;
+
 import java.util.Scanner;
 
 public class App {
@@ -218,16 +219,16 @@ public class App {
     {
         System.out.println("Please enter first name: ");
         Scanner one = new Scanner(System.in);
-        String na = one.next();
+        String fname = one.next();
         System.out.println("Please enter last name: ");
-        String sr = one.next();
+        String lname = one.next();
         System.out.println("Please enter studies number: ");
-        int c = one.nextInt();
+        int studies = one.nextInt();
         System.out.println("Please enter matrikelnumber: ");
-        int i = one.nextInt();
+        int matrikel = one.nextInt();
 
 
-        singlyList.addFirst(new Student(i, na, sr, c));
+        singlyList.addFirst(new Student(matrikel, fname, lname, studies));
         System.out.println("\nStudent added successfully.");
     }
 
@@ -235,15 +236,15 @@ public class App {
     {
         System.out.println("Please enter first name: ");
         Scanner one = new Scanner(System.in);
-        String na = one.next();
+        String fname = one.next();
         System.out.println("Please enter last name: ");
-        String sr = one.next();
+        String lname = one.next();
         System.out.println("Please enter studies number: ");
-        int c = one.nextInt();
+        int studies = one.nextInt();
         System.out.println("Please enter matrikelnumber: ");
-        int i = one.nextInt();
+        int matrikel = one.nextInt();
 
-        singlyList.addLast(new Student(i, na, sr, c));
+        singlyList.addLast(new Student(matrikel, fname, lname, studies));
         System.out.println("\nStudent added successfully.");
     }
 
@@ -255,15 +256,15 @@ public class App {
         int in = one.nextInt();
         System.out.println("Please enter first name: ");
 
-        String na = one.next();
+        String fname = one.next();
         System.out.println("Please enter last name: ");
-        String sr = one.next();
+        String lname = one.next();
         System.out.println("Please enter studies number: ");
-        int c = one.nextInt();
+        int studies = one.nextInt();
         System.out.println("Please enter matrikelnumber: ");
-        int i = one.nextInt();
+        int matrikel = one.nextInt();
 
-        singlyList.insert(in, new Student(i, na, sr, c));
+        singlyList.insert(in, new Student(matrikel, fname, lname, studies));
         System.out.println("\nStudent added successfully in the specified index.");
     }
 
@@ -387,26 +388,33 @@ public class App {
 
             System.out.println();
 
+            BubbleSort bubbleSort = new BubbleSort();
+            SelectionSort selectionSort = new SelectionSort();
+            MatrikelComparator matrikelComparator = new MatrikelComparator();
+            CourseComparator courseComparator = new CourseComparator();
             switch (input) {
-                case "1" -> SelectionSort.sort(singlyList, SortOptions.Matrikelnumber);
+                case "1" -> {
+                    selectionSort.sort(singlyList, matrikelComparator);
+                    return;
+                }
 
-                //return;
 
                 case "2" -> {
-                    SelectionSort.sort(singlyList, SortOptions.Studies);
+                    selectionSort.sort(singlyList, courseComparator);
                     System.out.println();
                     return;
                 }
                 case "3" -> {
-                    BubbleSort.sort(singlyList, SortOptions.Matrikelnumber);
+
+                    bubbleSort.sort(singlyList, matrikelComparator);
                     System.out.println();
                     return;
                 }
                 case "4" -> {
-                    BubbleSort.sort(singlyList, SortOptions.Studies);
+                    bubbleSort.sort(singlyList, courseComparator);
                     System.out.println();
+                    return;
                 }
-                //return;
                 default -> System.out.println("Invalid ! ");
             }
 

@@ -1,70 +1,20 @@
 package App.Algorithms;
-import App.enums.SortOptions;
-import App.Usecases.List;
-import App.Usecases.Node;
-import App.Data.Student;
 
+import App.Lists.IListable;
 
-public class BubbleSort extends Sort {
+public class BubbleSort<T> extends App.Algorithms.Swap<T> implements App.Algorithms.Sortable<T> {
 
-    private static long moves;
-
-    public static void sort(List<Student> list, SortOptions attr) {
-
-        long timeStart = System.nanoTime();
-        moves = 0;
-        long compares = 0;
-        boolean hasSwapped = true;
-
-        if (list.getSize() <= 1)
-            return;
-        int i = 0;
-
-        while (i < list.getSize() && hasSwapped) {
-
-            Node<Student> current = list.getHead();
-            Node<Student> next = list.getHead().getNext();
-
-            hasSwapped = false;
-
-            for (int j = 0; j < list.getSize() - 1 - i; j++) {
-
-                compares++;
-
-                switch (attr) {
-                    case Matrikelnumber:
-                        if (current.getData().getMatrikelnr() > next.getData().getMatrikelnr()) {
-
-                            swapData(current, next);
-                            hasSwapped = true;
-                        }
-                        break;
-                    case Studies:
-                        if (current.getData().getStudies() > (current.getNext().getData().getStudies())) {
-
-                            swapData(current, next);
-                            hasSwapped = true;
-
-                        }
+    @Override
+    public void sort(IListable<T> list, Comparator<T> comp) {
+        int n = list.size();
+        for (int i = 0 ; i < n-1 ; i++){
+            for (int j = 0; j < n-i-1 ; j++){
+                if(comp.compare(list.get(j), list.get(j+1)) > 0){
+                    T temp = list.get(j);
+                    list.set(j, list.get(j+1));
+                    list.set(j+1 , temp);
                 }
-                current = next;
-                next = next.getNext();
-
             }
-            i++;
         }
-
-        long timeEnd = System.nanoTime();
-        printStatistic("BubbleSort", list.getSize(), compares, moves, timeStart, timeEnd);
     }
-
-    private static void swapData(Node<Student> current, Node<Student> next) {
-
-        Student tmp = current.getData();
-        current.setData(next.getData());
-        next.setData(tmp);
-
-        moves++;
-    }
-
 }
